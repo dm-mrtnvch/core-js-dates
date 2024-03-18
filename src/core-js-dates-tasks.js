@@ -135,8 +135,11 @@ function getCountDaysOnPeriod(dateStart, dateEnd) {
  * '2024-02-02', { start: '2024-02-02', end: '2024-03-02' } => true
  * '2024-02-10', { start: '2024-02-02', end: '2024-03-02' } => true
  */
-function isDateInPeriod(/* date, period */) {
-  throw new Error('Not implemented');
+function isDateInPeriod(date, period) {
+  return (
+      Date.parse(date) >= Date.parse(period.start) &&
+      Date.parse(date) <= Date.parse(period.end)
+  );
 }
 
 /**
@@ -267,8 +270,28 @@ function getQuarter(date) {
  * { start: '01-01-2024', end: '15-01-2024' }, 1, 3 => ['01-01-2024', '05-01-2024', '09-01-2024', '13-01-2024']
  * { start: '01-01-2024', end: '10-01-2024' }, 1, 1 => ['01-01-2024', '03-01-2024', '05-01-2024', '07-01-2024', '09-01-2024']
  */
-function getWorkSchedule(/* period, countWorkDays, countOffDays */) {
-  throw new Error('Not implemented');
+function getWorkSchedule(period, countWorkDays, countOffDays) {
+  function generateDate(dateStr) {
+    return new Date(dateStr.split('-').reverse().join('-'));
+  }
+  function generateDateStr(date) {
+    return date.toISOString().split('T')[0].split('-').reverse().join('-');
+  }
+  const startDay = generateDate(period.start);
+  const endDay = generateDate(period.end);
+  const schedule = [];
+  while (startDay <= endDay) {
+    for (let i = 0; i < countWorkDays; i += 1) {
+      if (startDay <= endDay) {
+        schedule.push(generateDateStr(startDay));
+        startDay.setDate(startDay.getDate() + 1);
+      }
+    }
+    for (let i = 0; i < countOffDays; i += 1) {
+      if (startDay <= endDay) startDay.setDate(startDay.getDate() + 1);
+    }
+  }
+  return schedule;
 }
 
 /**
@@ -283,8 +306,11 @@ function getWorkSchedule(/* period, countWorkDays, countOffDays */) {
  * Date(2022, 2, 1) => false
  * Date(2020, 2, 1) => true
  */
-function isLeapYear(/* date */) {
-  throw new Error('Not implemented');
+function isLeapYear(date) {
+  const newDate = new Date(date);
+  const year = newDate.getFullYear();
+
+  return !(year % 4) && !(year % 100 && !(year % 400));
 }
 
 module.exports = {
