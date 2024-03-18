@@ -55,9 +55,11 @@ function getTime(date) {
  * '2024-01-30T00:00:00.000Z' => 'Tuesday'
  */
 function getDayName(date) {
-  const parsedDate = new Date(date);
-  const options = { weekday: 'long' };
-  return parsedDate.toLocaleDateString('en-US', options);
+  const options = {
+    weekday: 'long',
+  };
+
+  return new Intl.DateTimeFormat('en-US', options).format(new Date(date));
 }
 
 /**
