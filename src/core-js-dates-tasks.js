@@ -137,8 +137,8 @@ function getCountDaysOnPeriod(dateStart, dateEnd) {
  */
 function isDateInPeriod(date, period) {
   return (
-      Date.parse(date) >= Date.parse(period.start) &&
-      Date.parse(date) <= Date.parse(period.end)
+    Date.parse(date) >= Date.parse(period.start) &&
+    Date.parse(date) <= Date.parse(period.end)
   );
 }
 
@@ -208,10 +208,18 @@ function getCountWeekendsInMonth(month, year) {
  * Date(2024, 1, 23) => 8
  */
 function getWeekNumberByDate(date) {
-  const startOfYear = new Date(date.getFullYear(), 0, 1);
-  const daysFromStartOfYear = (date - startOfYear) / (1000 * 3600 * 24);
-  return Math.ceil((daysFromStartOfYear + startOfYear.getDay() + 1) / 7);
-}
+  const startYear = new Date(date.getFullYear(), 0, 1);
+  let answer = 1;
+  for (
+    let currentDay = new Date(startYear);
+    currentDay < date;
+    currentDay.setDate(currentDay.getDate() + 1)
+  ) {
+    if (currentDay.getDay() === 0) {
+      answer += 1;
+    }
+  }
+  return answer;
 }
 
 /**
