@@ -17,8 +17,9 @@
  * '01 Jan 1970 00:00:00 UTC' => 0
  * '04 Dec 1995 00:12:00 UTC' => 818035920000
  */
-function dateToTimestamp(/* date */) {
-  throw new Error('Not implemented');
+function dateToTimestamp(date) {
+  const time = new Date(date);
+  return time.getTime();
 }
 
 /**
@@ -31,8 +32,15 @@ function dateToTimestamp(/* date */) {
  * Date(2023, 5, 1, 8, 20, 55) => '08:20:55'
  * Date(2015, 10, 20, 23, 15, 1) => '23:15:01'
  */
-function getTime(/* date */) {
-  throw new Error('Not implemented');
+function getTime(date) {
+  const time = new Date(date);
+  const h = time.getHours();
+  const hh = h > 9 ? h : `0${h}`;
+  const m = time.getMinutes();
+  const mm = m > 9 ? m : `0${m}`;
+  const s = time.getSeconds();
+  const ss = s > 9 ? s : `0${s}`;
+  return `${hh}:${mm}:${ss}`;
 }
 
 /**
@@ -46,8 +54,10 @@ function getTime(/* date */) {
  * '03 Dec 1995 00:12:00 UTC' => 'Sunday'
  * '2024-01-30T00:00:00.000Z' => 'Tuesday'
  */
-function getDayName(/* date */) {
-  throw new Error('Not implemented');
+function getDayName(date) {
+  const parsedDate = new Date(date);
+  const options = { weekday: 'long' };
+  return parsedDate.toLocaleDateString('en-US', options);
 }
 
 /**
